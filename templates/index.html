@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>解析</title>
+    <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+    <link rel="stylesheet" href="//cdn.bootcss.com/zui/1.9.2/css/zui.min.css">
+    <style>
+		.setting{
+			margin-left: 50px;
+			margin-left: 50px;
+		}
+        img{
+            vertical-align: baseline;
+        }
+        .btns {
+            margin-top: 20px;
+			margin-bottom: 20px;
+        }
+        .input-group {
+            margin-top: 10px;
+        }
+        .panel-body {
+            padding: 15px 0;
+        }
+        .row {
+            margin: 50;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+<div class="tools-main clearfix">
+    <div class="tools-main-right">
+        <div id="toolsTitle">
+            <h1>解析</h1>
+        </div>
+        <div class="row" style="position:relative;">
+        <div class="panel-body">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="w1">
+                    <div class="setting">
+                        <div class="input-group"> <span class="input-group-addon">淘口令</span>
+                            <input type="text" class="form-control" id="input_tpwd" placeholder="请输入淘口令">
+                        </div>
+                        <div class="btns main">
+                            <button  class="btn btn-success" type="button" id="submit_tpwd" data-loading-text="正在查询...">查询</button>
+							<button  class="btn btn-danger" type="button" id="cleaner"> 清 空 </button>
+                        </div>
+						<div class="input-group">
+                                <span class="input-group-addon">复制下单</span>
+									<input type="text" class="form-control" id="tpwd" value="">
+                                <span class="input-group-btn">
+									<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#tpwd">复制</button>
+								</span>
+                            </div>
+                        <div class="result1" id="result1">
+							<div class="input-group">
+                                <span class="input-group-addon">商品标题</span>
+                                <input type="text" class="form-control" id="title">
+                                <span class="input-group-addon">优惠券信息</span>
+                                <input type="text" class="form-control" id="coupon_info">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">开始日期</span>
+                                <input type="text" class="form-control" id="coupon_start_time">
+                                <span class="input-group-addon">结束日期</span>
+                                <input type="text" class="form-control" id="coupon_end_time">
+                            </div>
+							<div class="input-group">
+                                <span class="input-group-addon">商品链接</span>
+									<input type="text" class="form-control" id="item_url" value="">
+                                <span class="input-group-btn">
+									<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#item_url">复制</button>
+								</span>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon">分享链接</span>
+									<input type="text" class="form-control" id="share_url" value="">
+                                <span class="input-group-btn">
+									<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#share_url">复制</button>
+								</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="clearfix" id="toolsNote" style="margin-top: 10px">
+            <div class="title">
+                <h3>简介</h3>
+            </div>
+            <ul class="tip-list">
+                <li class="tip-item"> 1. 淘口令自动解析并转链。</li>
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+
+</div>
+
+<div class="footer">
+    <div class="footer_box">
+    </div>
+
+    <div class="link">
+        
+    </div>
+</div>
+
+<script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+<script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/zui/1.9.2/js/zui.min.js"></script>
+<script type="text/javascript">
+	function toast(type, msg){
+		new $.zui.Messager(msg, {
+			type: type
+		}).show();
+	};
+    clipboard = new ClipboardJS(".btn");
+    clipboard.on("success", function(e) {
+        toast("success", "复制成功")
+    });
+    clipboard.on("error", function(e) {
+        toast("danger", "当前浏览器不支持复制")
+    });
+	
+</script>
+<script type="text/javascript">
+    $("#submit_tpwd").on("click",function() {
+        var $btn = $(this);
+        $btn.button("loading");
+        var tpwd=$("#input_tpwd").val().trim();
+		if (tpwd===""){
+			toast("info", "请输入淘口令!");
+			setTimeout(function() {
+                $btn.button("reset");
+            }, 200); return;
+		}
+        $("#tpwd").val("");
+		$("#title").val("");
+		$("#coupon_info").val("");
+		$("#coupon_start_time").val("");
+		$("#coupon_end_time").val("");
+		$("#item_url").val("");
+		$("#share_url").val("");
+
+		$.ajax({
+			url:"/api/coupon",
+			data: {
+				tpwd: tpwd
+			},
+			type: "get",
+			dataType:"json",
+			jsonp:"callback",
+			success:function(result) {
+				if(result.err_msg !==""){
+					$btn.button("reset");
+					toast("danger", result.err_msg);
+					return;
+				}else{
+					toast("success", "查询成功");
+				}
+
+				$("#tpwd").val(result.tpwd);
+				$("#title").val(result.title);
+				$("#coupon_info").val(result.coupon_info);
+				$("#coupon_start_time").val(result.coupon_start_time);
+				$("#coupon_end_time").val(result.coupon_end_time);
+				$("#item_url").val(result.item_url);
+				$("#share_url").val(result.share_url);
+				$btn.button("reset");
+			},
+			error:function() {
+				toast("danger", "网络异常,请稍后再试");
+				$btn.button("reset");
+			}
+        });
+    }),
+	$("#cleaner").click(function() {
+		$("#input_tpwd").val("");
+		$("#tpwd").val("");
+		$("#title").val("");
+		$("#coupon_info").val("");
+		$("#coupon_start_time").val("");
+		$("#coupon_end_time").val("");
+		$("#item_url").val("");
+		$("#share_url").val("");
+    })
+</script>
+</div>
+</body>
+</html>
