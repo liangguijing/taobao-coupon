@@ -6,120 +6,147 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>解析</title>
     <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
-    <link rel="stylesheet" href="//cdn.bootcss.com/zui/1.9.2/css/zui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/zui/1.9.2/css/zui.min.css">
     <style>
-		.setting{
-			margin-left: 50px;
-			margin-left: 50px;
+		.navbar {
+			background-color: black;
 		}
-        img{
-            vertical-align: baseline;
-        }
-        .btns {
-            margin-top: 20px;
-			margin-bottom: 20px;
+        .btns.main {
+            margin-top: 10px;
+			margin-bottom: 10px;
+			text-align: center;
         }
         .input-group {
-            margin-top: 10px;
+            margin: 10px;
         }
-        .panel-body {
-            padding: 15px 0;
-        }
-        .row {
-            margin: 50;
-        }
+
     </style>
 </head>
 <body>
 
-
 <div class="container">
+
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <!-- 导航头部 -->
+    <div class="navbar-header">
+      <!-- 移动设备上的导航切换按钮 -->
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-example">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- 品牌名称或logo -->
+      <a class="navbar-brand" href="#">COUPON</a>
+    </div>
+    <!-- 导航项目 -->
+    <div class="collapse navbar-collapse navbar-collapse-example">
+      <!-- 一般导航项目 -->
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#"><i class="icon-home"></i> 首页 </a></li>
+		<li><a href="#">聚划算</a></li>
+		<li><a href="#">淘抢购</a></li>
+        <li><a href="#">待开发</a></li>
+      </ul>
+	  
+	  <!-- 右侧导航 -->
+	  <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="your/nice/url" class="dropdown-toggle" data-toggle="dropdown">更多 <b class="caret"></b></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">待开发</a></li>
+          </ul>
+        </li>
+      </ul>
+	  
+	  
+    </div><!-- END .navbar-collapse -->
+  </div>
+</nav>
+
+
+
 <div class="tools-main clearfix">
-    <div class="tools-main-right">
-        <div id="toolsTitle">
-            <h1>解析</h1>
-        </div>
-        <div class="row" style="position:relative;">
-        <div class="panel-body">
-            <div class="tab-content">
-                <div class="tab-pane fade in active" id="w1">
-                    <div class="setting">
-                        <div class="input-group"> <span class="input-group-addon">淘口令</span>
-                            <input type="text" class="form-control" id="input_tpwd" placeholder="请输入淘口令">
-                        </div>
-                        <div class="btns main">
-                            <button  class="btn btn-success" type="button" id="submit_tpwd" data-loading-text="正在查询...">查询</button>
-							<button  class="btn btn-danger" type="button" id="cleaner"> 清 空 </button>
-                        </div>
-						<div class="input-group">
-                                <span class="input-group-addon">复制下单</span>
-									<input type="text" class="form-control" id="tpwd" value="">
-                                <span class="input-group-btn">
-									<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#tpwd">复制</button>
-								</span>
-                            </div>
-                        <div class="result1" id="result1">
-							<div class="input-group">
-                                <span class="input-group-addon">商品标题</span>
-                                <input type="text" class="form-control" id="title">
-                                <span class="input-group-addon">优惠券信息</span>
-                                <input type="text" class="form-control" id="coupon_info">
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">开始日期</span>
-                                <input type="text" class="form-control" id="coupon_start_time">
-                                <span class="input-group-addon">结束日期</span>
-                                <input type="text" class="form-control" id="coupon_end_time">
-                            </div>
-							<div class="input-group">
-                                <span class="input-group-addon">商品链接</span>
-									<input type="text" class="form-control" id="item_url" value="">
-                                <span class="input-group-btn">
-									<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#item_url">复制</button>
-								</span>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-addon">分享链接</span>
-									<input type="text" class="form-control" id="share_url" value="">
-                                <span class="input-group-btn">
-									<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#share_url">复制</button>
-								</span>
-                            </div>
+	<div class="panel" style="position:relative;">
+		<div class="panel-heading">  <h2>淘口令解析&优惠券查询</h2></div>
+		
+		<div class="panel-body">
+			<div class="input-group">
+				<span class="input-group-addon">淘口令</span>
+					<input type="text" class="form-control" id="input_tpwd" placeholder="请输入淘口令">
+				<span class="input-group-addon fix-border fix-padding"></span>
+				<span class="input-group-btn">
+					<button class="btn btn-success" type="button" id="submit_tpwd">  开 始 查 询  </button>
+				</span>
+				<span class="input-group-addon fix-border fix-padding"></span>
+				<span class="input-group-btn">
+					<button class="btn btn-danger" type="button" id="cleaner">  清 空  </button>
+				</span>
+			</div>
+			
+			<div class="item-info" align="center" hidden="">
+				<a target="_blank">
+					<img class="img-rounded" alt="" width="250px" height="250px">
+					<p class="item-title"></p>
+				</a>
+			</div>
+			
+			
+			<div class="input-group">
+				<span class="input-group-addon">复制下单</span>
+					<input type="text" class="form-control" id="tpwd" value="">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#tpwd">复制</button>
+				</span>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">商品标题</span>
+				<input type="text" class="form-control" id="title">
+				<span class="input-group-addon">优惠券信息</span>
+				<input type="text" class="form-control" id="coupon_info">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">开始日期</span>
+				<input type="text" class="form-control" id="coupon_start_time">
+				<span class="input-group-addon">结束日期</span>
+				<input type="text" class="form-control" id="coupon_end_time">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">商品链接</span>
+					<input type="text" class="form-control" id="item_url" value="">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#item_url">复制</button>
+				</span>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">分享链接</span>
+					<input type="text" class="form-control" id="share_url" value="">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" data-clipboard-action="copy" data-clipboard-target="#share_url">复制</button>
+				</span>
+			</div>
+		</div>
+		
+		<div class="panel-footer">
+			<div class="title">
+				<h3>简介</h3>
+			</div>
+			<ul class="tip-list">
+				<li class="tip-item"> 本工具可一键将淘口令文本解析并转换成自己的推广链接和口令。</li>
+			</ul>
+		</div>
+	</div>
+	
 
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-        <div class="clearfix" id="toolsNote" style="margin-top: 10px">
-            <div class="title">
-                <h3>简介</h3>
-            </div>
-            <ul class="tip-list">
-                <li class="tip-item"> 1. 淘口令自动解析并转链。</li>
-            </ul>
-        </div>
-
-
-    </div>
 </div>
 
 </div>
 
-<div class="footer">
-    <div class="footer_box">
-    </div>
 
-    <div class="link">
-        
-    </div>
-</div>
-
-<script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
-<script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/zui/1.9.2/js/zui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/zui/1.9.2/js/zui.min.js"></script>
 <script type="text/javascript">
 	function toast(type, msg){
 		new $.zui.Messager(msg, {
@@ -142,10 +169,10 @@
         var tpwd=$("#input_tpwd").val().trim();
 		if (tpwd===""){
 			toast("info", "请输入淘口令!");
-			setTimeout(function() {
-                $btn.button("reset");
-            }, 200); return;
+            $btn.button("reset");
+			return;
 		}
+		$(".item-info").attr("hidden", "");
         $("#tpwd").val("");
 		$("#title").val("");
 		$("#coupon_info").val("");
@@ -172,6 +199,11 @@
 				}
 
 				$("#tpwd").val(result.tpwd);
+				$(".item-info").removeAttr("hidden");
+				$(".item-info > a").attr("href", result.share_url);
+				$(".item-info > a .item-title")[0].innerHTML=result.title.substring(0,20)+"...";
+				$(".item-info > a .img-rounded").attr("src", result.pict_url);
+				$(".item-info > a .img-rounded").attr("alt", result.title);
 				$("#title").val(result.title);
 				$("#coupon_info").val(result.coupon_info);
 				$("#coupon_start_time").val(result.coupon_start_time);
@@ -187,6 +219,7 @@
         });
     }),
 	$("#cleaner").click(function() {
+		$(".tb-item").attr("hidden", "");
 		$("#input_tpwd").val("");
 		$("#tpwd").val("");
 		$("#title").val("");
