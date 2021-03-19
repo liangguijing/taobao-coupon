@@ -12,7 +12,7 @@ from coupon.api.top.base import RestApi
 from config import config
 
 
-AD_ZONE_ID = config.get("account", "ad_zone_id")
+AD_ZONE_ID = config.get("account", "pid").split("_")[-1]
 
 
 class TbkDgMaterialOptional(RestApi):

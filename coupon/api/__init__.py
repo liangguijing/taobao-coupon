@@ -12,6 +12,7 @@ from coupon.api.tkl.uland import ULandApi
 from coupon.api.tkl.itemid import ItemApi
 from coupon.api.top.tbk_dg_material_optional import TbkDgMaterialOptional
 from coupon.api.top.taobao_tbk_tpwd_create import TaobaoTbkTPwdCreate
+from coupon.api.top.tbk_dg_optimus_material import TbkDgOptimusMaterial
 
 sclick_api = SClickApi()
 tbpwd_api = TPwdApi()
