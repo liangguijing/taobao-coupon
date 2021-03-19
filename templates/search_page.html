@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>查优惠券</title>
+    <title>搜索结果</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/zui/1.9.2/css/zui.min.css">
     <style>
 			.container-center{
@@ -86,35 +86,25 @@
 				<div id="search-bar">
 					<div class="input-group">
 						<div class="input-control search-box search-box-circle has-icon-left has-icon-right" id="searchbox">
-							<input id="inputSearch" type="search" class="form-control search-input" placeholder="输入商品名或粘贴宝贝标题或淘口令搜索">
+							<input id="inputSearch" type="search" class="form-control search-input" placeholder="输入商品名或粘贴宝贝标题或淘口令搜索" value={{ query }}>
 							<label for="inputSearch" class="input-control-icon-left search-icon"><i class="icon icon-search"></i></label>
 						</div>
 						<span class="input-group-btn">
-							<button class="btn btn-primary" id="search-btn" type="button">搜索</button>
+							<button class="btn btn-primary" id="search-btn" page="1" type="button">搜索</button>
 						</span>
 					</div>
 					
 				</div>
       </div>
-			
-
-			<div class="container-center">
-				<ul class="nav nav-tabs">
-					<li class="active"><a data-tab href="#tabContent1" material_id="28026" page="1">热销榜</a></li>
-					<li><a data-tab href="#tabContent2" material_id="4092" page="1">有好货</a></li>
-					<li><a data-tab href="#tabContent3" material_id="27446" page="1">大额券</a></li>
-					<li><a data-tab href="#tabContent4" material_id="31362" page="1">天天特卖</a></li>
-				</ul>
-			</div>
-
     
     </div>
   </nav>
 	
+
 	
 	<div class="main">
 		<div class="container">
-			<div class="tab-content">
+			<div class="cards">
 			
 			</div>
 
@@ -160,57 +150,22 @@
 
 <script type="text/javascript">
 
-	$('[data-tab]').on('show.zui.tab', function(e) {
-    id = e.target.getAttribute("href").substring(1);
-    material_id = e.target.getAttribute("material_id");
-    page_no = e.target.getAttribute("page");
-    page_no = parseInt(page_no);
-
-    if ($("#" + id).length === 0) {
-        setPanel(id);
-        $.ajax({
-            url: "/coupon/optimus",
-            data: {
-                material_id: material_id,
-                page_no: page_no,
-            },
-            type: "get",
-            dataType: "json",
-            jsonp: "callback",
-            success: function(data) {
-                if (data && data.result_list) {
-                    data.result_list.forEach(result=>{
-                        setCard($("#" + id + " .cards"), result);
-                    }
-                    );
-                    e.target.setAttribute("page", page_no += 1);
-                    $(".tab-pane").attr("class", "tab-pane");
-                    $("#" + id).attr("class", "tab-pane active");
-                }
-            },
-            error: function() {
-                toast("danger", "网络异常,请稍后再试");
-            }
-        });
-
-    }
-});
-
 $("#load-more").on("click", function() {
-	panel = $(".nav li.active a")[0];
-	id = panel.getAttribute("href").substring(1);
-    material_id = panel.getAttribute("material_id");
-    page_no = panel.getAttribute("page");
+	var $btn = $(this);
+		var query = $("#inputSearch").val().trim();
+		if (query===""){
+			toast("info", "请输入淘口令!");
+			return;
+		}
+		
+    page_no = $("#search-btn")[0].getAttribute("page");
     page_no = parseInt(page_no);
-	
-	if ($("#" + id).length === 0) {
-        setPanel(id);
-	}
+		
     $.ajax({
-        url: "/coupon/optimus",
+        url: "/coupon/search",
         data: {
-            material_id: material_id,
-            page_no: page_no,
+            query: query,
+						page: page_no
         },
         type: "get",
         dataType: "json",
@@ -218,31 +173,22 @@ $("#load-more").on("click", function() {
         success: function(data) {
             if (data && data.result_list) {
                 data.result_list.forEach(result=>{
-                    setCard($("#" + id + " .cards"), result);
+                    setCard($(".cards"), result);
                 }
                 );
-                panel.setAttribute("page", page_no += 1);
-                $(".tab-pane").attr("class", "tab-pane");
-                $("#" + id).attr("class", "tab-pane active");
-            }
+                $("#search-btn")[0].setAttribute("page", page_no += 1);
+            }else{
+							toast("info", "已经到底啦");
+						}
         },
         error: function() {
             toast("danger", "网络异常,请稍后再试");
         }
     });
+	
 
 });
 
-
-function setPanel(id) {
-    segm = `
-			<div class="tab-pane" id="${id}">
-				<div class="cards">
-				</div>
-			</div>
-		`;
-    $(".tab-content").append(segm);
-}
 
 function setCard(node, result) {
     segm = `
@@ -268,16 +214,54 @@ function setCard(node, result) {
 
 
 $(function(){
-	$("#load-more").trigger("click")
+	if ($("#inputSearch").val().trim() !== ""){
+		$("#search-btn").trigger("click");
+	}
 });
 	
 </script>
 
 <script type="text/javascript">
-$("#search-btn").on("click",function() {
-	window.location.href = "/coupon/search_page?query=" + $("#inputSearch").val()
-});
-</script>
 
+	$("#search-btn").on("click",function() {
+		var $btn = $(this);
+		var query = $("#inputSearch").val().trim();
+		if (query===""){
+			toast("info", "请输入淘口令!");
+			return;
+		}
+		
+		$btn[0].setAttribute("page", "1");
+		$(".cards")[0].innerHTML = "";
+    page_no = 1;
+    
+    $.ajax({
+        url: "/coupon/search",
+        data: {
+            query: query,
+						page: "1"
+        },
+        type: "get",
+        dataType: "json",
+        jsonp: "callback",
+        success: function(data) {
+            if (data && data.result_list) {
+                data.result_list.forEach(result=>{
+                    setCard($(".cards"), result);
+                }
+                );
+                $btn[0].setAttribute("page", "2");
+            }else{
+							toast("info", "查询无结果，请换个名称再试");
+						}
+        },
+        error: function() {
+            toast("danger", "网络异常,请稍后再试");
+        }
+    });
+		
+	});
+
+</script>
 </body>
 </html>
