@@ -1,5 +1,5 @@
 # taobao-coupon
-淘口令解析、转链、生成自己的推广淘口令
+淘宝优惠券查询，支持商品名或淘口令搜索，解析、转链、生成推广链接
 
 前端框架[ZUI](https://github.com/easysoft/zui)
 后端框架[Django](https://github.com/django/django)
