@@ -15,7 +15,7 @@ from coupon.api import TbkDgOptimusMaterial, TbkDgMaterialOptional
 
 # ULAND_PATTERN = re.compile(r"^https://uland\w+")
 # SCLICK_PATTERN = re.compile(r"^https://s\.click\w+")
-TPWD_PATTERN = re.compile(r"\W\w{11}\W")
+TPWD_PATTERN = re.compile(r"[^0-9A-z][0-9A-z]{11}[^0-9A-z]")
 
 
 def index(request):
@@ -36,7 +36,7 @@ def search(request: HttpRequest):
     if tpwd:
         query = get_item_url(tpwd)
     tb = TbkDgMaterialOptional()
-    tb.page_size = "12"
+    tb.page_size = "24"
     tb.q = query
     tb.page_no = page_no
     resp = tb.get_response()
@@ -77,6 +77,6 @@ def optimus(request: HttpRequest):
         tb.page_no = request.GET.get("page_no")
     else:
         tb.page_no = "1"
-    tb.page_size = "12"
+    tb.page_size = "24"
     resp = tb.get_response()
     return JsonResponse(resp)
