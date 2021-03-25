@@ -8,7 +8,7 @@
 
 import logging
 from functools import wraps
-from threading import Lock
+from threading import RLock
 
 logger = logging.getLogger("django")
 
@@ -35,9 +35,10 @@ def singleton(cls, *args, **kwargs):
     """
     单例模式装饰器
     """
-    lock = Lock()
+    lock = RLock()
     instance = {}
 
+    @wraps(cls)
     def wrapper():
         if cls not in instance:
             with lock:
