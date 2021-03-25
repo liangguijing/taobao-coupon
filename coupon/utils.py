@@ -39,7 +39,7 @@ def singleton(cls, *args, **kwargs):
     instance = {}
 
     @wraps(cls)
-    def wrapper():
+    def wrapper(*args, **kwargs):
         if cls not in instance:
             with lock:
                 if cls not in instance:
